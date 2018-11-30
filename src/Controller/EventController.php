@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Service\EventService;
 
 
+
 class EventController extends AbstractController
 {
 
@@ -19,7 +20,7 @@ class EventController extends AbstractController
     {
 
         return $this->render( "event/index.html.twig", [ 
-            "events" => $eventService->listEvent()
+            "events" => $eventService->getAll()
         ]);
     }
     /**
@@ -49,8 +50,16 @@ class EventController extends AbstractController
     }
 
     /**
-    * @Route("/event/{id}", name="event_show", requirements={"id"="\d+"})
-    */
+     * @Route("/event/name", name="event_name")
+     */
+    public function listByName(EventService $eventService)
+    {
+
+        return $this->render( "event/index.html.twig", [ 
+            "events"
+             => $eventService->getAllByName()
+        ]);
+    }
 
 
 

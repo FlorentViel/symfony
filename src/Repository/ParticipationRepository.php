@@ -1,22 +1,22 @@
 <?php
 namespace App\Repository;
-use App\Entity\Place;
+use App\Entity\Participation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 /**
- * @method Place|null find($id, $lockMode = null, $lockVersion = null)
- * @method Place|null findOneBy(array $criteria, array $orderBy = null)
- * @method Place[]    findAll()
- * @method Place[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Participation|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Participation|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Participation[]    findAll()
+ * @method Participation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PlaceRepository extends ServiceEntityRepository
+class ParticipationRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Place::class);
+        parent::__construct($registry, Participation::class);
     }
     // /**
-    //  * @return Place[] Returns an array of Place objects
+    //  * @return Participation[] Returns an array of Participation objects
     //  */
     /*
     public function findByExampleField($value)
@@ -32,7 +32,7 @@ class PlaceRepository extends ServiceEntityRepository
     }
     */
     /*
-    public function findOneBySomeField($value): ?Place
+    public function findOneBySomeField($value): ?Participation
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')

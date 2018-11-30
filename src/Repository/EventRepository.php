@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Repository;
-
 use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-
 /**
  * @method Event|null find($id, $lockMode = null, $lockVersion = null)
  * @method Event|null findOneBy(array $criteria, array $orderBy = null)
@@ -15,10 +12,9 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class EventRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
-    {
+      {
         parent::__construct($registry, Event::class);
     }
-
     // /**
     //  * @return Event[] Returns an array of Event objects
     //  */
@@ -35,7 +31,6 @@ class EventRepository extends ServiceEntityRepository
         ;
     }
     */
-
     /*
     public function findOneBySomeField($value): ?Event
     {
@@ -47,4 +42,18 @@ class EventRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByName($value)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.name = :val')
+            ->setParameter('val', $value)
+            ->orderBy('e.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
 }

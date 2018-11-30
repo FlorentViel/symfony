@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Entity;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
@@ -17,96 +14,75 @@ class User
      * @ORM\Column(type="integer")
      */
     private $id;
-
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $passaword;
-
+    private $username;
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $email;
-
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $role;
-
+    private $password;
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="user", orphanRemoval=true)
+     * @ORM\Column(type="array")
+     */
+    private $roles = [];
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="owner")
      */
     private $events;
-
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\UserHasEvent", mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Participation", mappedBy="user", orphanRemoval=true)
      */
-    private $userHasEvents;
-
+    private $participations;
     public function __construct()
     {
         $this->events = new ArrayCollection();
-        $this->userHasEvents = new ArrayCollection();
+        $this->participations = new ArrayCollection();
     }
-
     public function getId(): ?int
     {
         return $this->id;
     }
-
-    public function getName(): ?string
+    public function getUsername(): ?string
     {
-        return $this->name;
+        return $this->username;
     }
-
-    public function setName(string $name): self
+    public function setUsername(string $username): self
     {
-        $this->name = $name;
-
+        $this->username = $username;
         return $this;
     }
-
-    public function getPassaword(): ?string
-    {
-        return $this->passaword;
-    }
-
-    public function setPassaword(string $passaword): self
-    {
-        $this->passaword = $passaword;
-
-        return $this;
-    }
-
     public function getEmail(): ?string
     {
         return $this->email;
     }
-
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
         return $this;
     }
-
-    public function getRole(): ?string
+    public function getPassword(): ?string
     {
-        return $this->role;
+        return $this->password;
     }
-
-    public function setRole(string $role): self
+    public function setPassword(string $password): self
     {
-        $this->role = $role;
-
+        $this->password = $password;
         return $this;
     }
-
+    public function getRoles(): ?array
+    {
+        return $this->roles;
+    }
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+        return $this;
+    }
     /**
      * @return Collection|Event[]
      */
@@ -114,58 +90,49 @@ class User
     {
         return $this->events;
     }
-
     public function addEvent(Event $event): self
     {
         if (!$this->events->contains($event)) {
             $this->events[] = $event;
-            $event->setUser($this);
+            $event->setOwner($this);
         }
-
         return $this;
     }
-
     public function removeEvent(Event $event): self
     {
         if ($this->events->contains($event)) {
             $this->events->removeElement($event);
             // set the owning side to null (unless already changed)
-            if ($event->getUser() === $this) {
-                $event->setUser(null);
+            if ($event->getOwner() === $this) {
+                $event->setOwner(null);
             }
         }
-
         return $this;
     }
-
     /**
-     * @return Collection|UserHasEvent[]
+     * @return Collection|Participation[]
      */
-    public function getUserHasEvents(): Collection
+    public function getParticipations(): Collection
     {
-        return $this->userHasEvents;
+        return $this->participations;
     }
-
-    public function addUserHasEvent(UserHasEvent $userHasEvent): self
+    public function addParticipation(Participation $participation): self
     {
-        if (!$this->userHasEvents->contains($userHasEvent)) {
-            $this->userHasEvents[] = $userHasEvent;
-            $userHasEvent->setUser($this);
+        if (!$this->participations->contains($participation)) {
+            $this->participations[] = $participation;
+            $participation->setUser($this);
         }
-
         return $this;
     }
-
-    public function removeUserHasEvent(UserHasEvent $userHasEvent): self
+    public function removeParticipation(Participation $participation): self
     {
-        if ($this->userHasEvents->contains($userHasEvent)) {
-            $this->userHasEvents->removeElement($userHasEvent);
+        if ($this->participations->contains($participation)) {
+            $this->participations->removeElement($participation);
             // set the owning side to null (unless already changed)
-            if ($userHasEvent->getUser() === $this) {
-                $userHasEvent->setUser(null);
+            if ($participation->getUser() === $this) {
+                $participation->setUser(null);
             }
         }
-
         return $this;
     }
 }

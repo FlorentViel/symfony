@@ -1,50 +1,41 @@
-<?php 
-
+<?php
 namespace App\Service;
-
+use Doctrine\Common\Persistence\ObjectManager;
+use App\Entity\Event;
 class EventService 
 {
 
-    private $events = [
-        [
-            'id' => 1, 
-            'title' => 'titre1', 
-            'description' => "azjjiajijaej",
-            "start_date"=> "2018-11-29 08:00:00",
-            "end_date"=> "2018-11-29 23:00:00"
-        ],
-    
-        [
-            'id' => 2, 
-            'title' => 'titre2', 
-            'description' => "azjjiajijaej",
-            "start_date"=> "2018-12-29 08:00:00",
-            "end_date"=> "2018-12-29 23:00:00"
-        ],
-    
-        [
-            'id' => 3, 
-            'title' => 'titre3', 
-            'description' => "azjjiajijaej",
-            "start_date"=> "2017-11-29 08:00:00",
-            "end_date"=> "2017-11-29 23:00:00"
-            
-        ]        
-    ];
+    private $om;
 
-    public function listEvent() {
- 
-
-
-        return $this->events;   
+    public function __construct( ObjectManager $om )
+    {
+        $this->om = $om;
     }
 
-    public function getOne($id){
+    public function getAll()
+    {
+        $repo = $this->om->getRepository( Event::class );
+        return $repo->findAll();
+    }
+
+    public function getOne( $id ) 
+    {
+        $repo = $this->om->getRepository( Event::class );
+        return $repo->find( $id );
+    }
+
+    public function getAllByName()
+    {
+        $nom = "Event3";
+
+        $repo = $this->om->getRepository(Event::class);
         
-        foreach ($this->events as $key => $value) {
-            if ($value['id'] == $id)
-                return $value;
-        }
-        return null;
+        return $repo->findByName($nom);
+
+
     }
+
 }
+
+
+?>
