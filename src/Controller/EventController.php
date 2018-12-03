@@ -3,6 +3,8 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+
 
 use App\Service\EventService;
 
@@ -16,12 +18,15 @@ class EventController extends AbstractController
     /**
      * @Route("/event", name="event_list")
      */
-    public function list(EventService $eventService)
+    public function list( Request $request , EventService $eventService)
     {
-
+        $querySort = $request->query->get('sort');
+        $querySearch = $request->query->get('querySearch');
         return $this->render( "event/index.html.twig", [ 
-            "events" => $eventService->getAll()
+            "events" => $eventService->getAllByName($querySearch, $querySort),
+            "IncomingEvents" => $eventService->getCountByDate()
         ]);
+
     }
     /**
      * @Route("/event/{id}", name="event_show", requirements={"id"="\d+"})
@@ -48,21 +53,6 @@ class EventController extends AbstractController
     {
         return $this->render( "event/index.html.twig");
     }
-
-    /**
-     * @Route("/event/name", name="event_name")
-     */
-    public function listByName(EventService $eventService)
-    {
-
-        return $this->render( "event/index.html.twig", [ 
-            "events"
-             => $eventService->getAllByName()
-        ]);
-    }
-
-
-
 
 
     

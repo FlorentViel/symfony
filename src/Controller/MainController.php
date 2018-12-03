@@ -15,4 +15,20 @@ class MainController extends AbstractController
     {
         return $this->render('main/index.html.twig');
     }
+
+    // /**
+    //  * @Route("/", name="")
+    //  */
+
+    // public function search()
+    // {
+    //     $builder->add('naim', null, array(
+    //         'required'   => false,
+    //         'emptyData' => 'Rechercher',
+        
+    //     ));
+
+    //     return $this->render('base.html.twig');
+
+    // }
 }

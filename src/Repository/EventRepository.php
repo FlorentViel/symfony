@@ -43,17 +43,46 @@ class EventRepository extends ServiceEntityRepository
     }
     */
 
-    public function findByName($value)
+    public function findName($value, $sort)
     {
-        return $this->createQueryBuilder('e')
-            ->andWhere('e.name = :val')
-            ->setParameter('val', $value)
-            ->orderBy('e.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
+ 
+        $stmt = $this->createQueryBuilder('e')
+            ->andWhere("e.name LIKE :val")
+            //->andWhere("e.$param LIKE :param")
+            ->setParameter('val', '%'.$value.'%');
+            //->setParameter('param', '%'.$param.'%')
+            if ( $sort == "price" )
+            {
+            $stmt ->orderBy('e.price' , 'ASC');
+            }
+
+            elseif ($sort == "date")
+            {
+            $stmt ->orderBy('e.createdAt' , 'DESC');
+            }
+ 
+         
+            $stmt ->setMaxResults(10);
+            return $stmt->getQuery()
             ->getResult()
         ;
     }
+
+    public function Incommingcount()
+    {
+        return $this->createQueryBuilder('e')
+        ->select('count(e)')
+        ->andWhere('e.startAt > :bind')
+        ->setParameter('bind', new \DateTime())
+        ->getQuery()
+        ->getSingleScalarResult()
+        ;
+
+
+    }
+
+
+
 
 
 }

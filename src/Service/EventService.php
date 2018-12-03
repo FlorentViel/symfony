@@ -24,16 +24,25 @@ class EventService
         return $repo->find( $id );
     }
 
-    public function getAllByName()
+    public function getAllByName($nom , $sort)
     {
-        $nom = "Event3";
 
         $repo = $this->om->getRepository(Event::class);
         
-        return $repo->findByName($nom);
+        return $repo->findName($nom, $sort);
 
 
     }
+
+    public function getCountByDate() {
+
+        $repo = $this->om->getRepository(Event::class);
+        
+        return $repo->Incommingcount();
+
+    }
+
+
 
 }
 
