@@ -9,17 +9,27 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Liste des évenements </h1>
-    <br/>
-    Voici la liste:
-    <ul>
 
+<ul>
     <br/>
-<p>Il y a {{IncomingEvents}} events à venir.</p>
+
+    <h1>Liste des évenements </h1>
+    
+    <br/>
+
+    <h2>Voici la liste:</h2>
+  
+    
+    <p>Il y a {{IncomingEvents}} events à venir.</p>
+
+ 
 
     {% for event in events %}
-        <h2>{{event.name}}</h2>
+        <div class = "d-flex lex-row bd-highlight mb-2"><h2>{{event.name}} : </h2>
+        <span class= "mb-1 ml-1" style = "padding: 1%"> Date de création {{ event.createdAt|date('Y-m-d\\ h:i') }}<span></div>
         <p>{{event.content}}</p>
+        <span>{{event.price}} € </span>
+        <br/>
         <a href="{{ path('event_show', {id: event.id}) }}">Voir plus</a>
         {% if date(event.startAt) <= date() and date(event.endAt) >= date() %}
             <p>en cours</p>
@@ -29,9 +39,22 @@
             <p>futur</p>
         {% endif %}
 
+
+<hr>
+
     {% endfor %}
     </ul>
 </div>
+
+    <div class="container d-flex flex-row-reverse bd-highligh ">
+
+        <span class="text-muted p-2 bd-highlight"><a class="nav-link" href="?page={{page + 1 }}">Page suivante</a></span>
+        <span style ="padding-top: 1.4%">{{page}}</span>
+        {% if page > 1 %}
+        <span class="text-muted p-2 bd-highlight"><a class="nav-link" href="?page={{page - 1}}">Page précédente</a></span>
+    </div> 
+   {% endif %}
+
 
 {% endblock %}
 

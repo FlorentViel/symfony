@@ -2,10 +2,13 @@
 namespace App\Service;
 use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\Event;
+use App\Form\EventType;
+
 class EventService 
 {
 
     private $om;
+    private $eventType;
 
     public function __construct( ObjectManager $om )
     {
@@ -24,12 +27,12 @@ class EventService
         return $repo->find( $id );
     }
 
-    public function getAllByName($nom , $sort)
+    public function getAllByName($nom , $sort, $page)
     {
 
         $repo = $this->om->getRepository(Event::class);
         
-        return $repo->findName($nom, $sort);
+        return $repo->findName($nom, $sort, $page);
 
 
     }
@@ -41,6 +44,8 @@ class EventService
         return $repo->Incommingcount();
 
     }
+
+
 
 
 

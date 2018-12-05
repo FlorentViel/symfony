@@ -3,6 +3,8 @@ namespace App\Repository;
 use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 /**
  * @method Event|null find($id, $lockMode = null, $lockVersion = null)
  * @method Event|null findOneBy(array $criteria, array $orderBy = null)
@@ -43,10 +45,11 @@ class EventRepository extends ServiceEntityRepository
     }
     */
 
-    public function findName($value, $sort)
+    public function findName($value, $sort, $page)
     {
- 
+
         $stmt = $this->createQueryBuilder('e')
+
             ->andWhere("e.name LIKE :val")
             //->andWhere("e.$param LIKE :param")
             ->setParameter('val', '%'.$value.'%');
@@ -61,8 +64,12 @@ class EventRepository extends ServiceEntityRepository
             $stmt ->orderBy('e.createdAt' , 'DESC');
             }
  
-         
-            $stmt ->setMaxResults(10);
+            $limit = 1;
+            $stmt ->setMaxResults($limit)
+            //->getInt('page', 1)
+            ->setFirstResult( ($page - 1 )*$limit)
+        ;
+
             return $stmt->getQuery()
             ->getResult()
         ;
