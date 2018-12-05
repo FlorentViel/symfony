@@ -70,7 +70,7 @@ class EventController extends AbstractController
             $entityManager->persist($event);
             $entityManager->flush();
 
-            $request->getSession()->getFlashBag()->add('notice', 'Evenement bien enregistrée.');
+            //$request->getSession()->getFlashBag()->add('notice', 'Evenement bien enregistrée.');
 
             return $this->redirectToRoute('event_detail', array('id' => $event->getId()));
         }
@@ -82,12 +82,15 @@ class EventController extends AbstractController
 
 
     /**
-     * @Route("/event/detail", name="event_detail")
+     * @Route("/event/detail{id}", name="event_detail" , requirements={"id"="\d+"}))
      */
 
-    public function detail( Request $request)
+    public function detail($id, EventService $eventService , Request $request)
     {
-        return $this->render( "event/detail.html.twig");
+        //$request->getSession()->getFlashBag()->add('notice', 'Evenement bien enregistrée.');
+        return $this->render( "event/detail.html.twig", 
+        ["event" => $eventService->getOne( $id )
+        ]);
     }
 
 

@@ -2,6 +2,7 @@
 namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
@@ -16,6 +17,12 @@ class Event
     private $id;
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     * min = 3,
+     * max = 50,
+     * minMessage = "{{limit}} caracètres minimums",
+     * maxMessage = "{{limit}} caractères maximums"
+     * )
      */
     private $name;
     /**
@@ -25,6 +32,7 @@ class Event
     /**
      * @ORM\Column(type="datetime")
      */
+     
     private $startAt;
     /**
      * @ORM\Column(type="datetime")
@@ -70,6 +78,7 @@ class Event
         $this->categories = new ArrayCollection();
         $this->participations = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->createdAt =  new \DateTime('now');
     }
     public function getId(): ?int
     {
