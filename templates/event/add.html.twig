@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Fomulaire- {{parent()}} {% endblock %}
+{% block title %}Ajouter un évenement- {{parent()}} {% endblock %}
 
 {% block body %}
 
@@ -8,7 +8,7 @@
 <div class="well ml-4 mt-2">
     <h1 class ="ml-2">Formulaire</h1>
     
-    {{form_start(form, {'attr': {'class': 'form-horizontal'}})}}
+    {{form_start(form,  {'attr': {'novalidate' : 'novalidate', 'class': 'form-horizontal'}})}}
     {{ form_errors(form) }}
 
 
@@ -16,7 +16,6 @@
     <div class="form-group">
 
         {{  form_label(form.name, 'Choisiez un nom d\'évenement', {'label_attr': {'class' : 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.name) }}
         
         <div class="col-sm-3">
             {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
@@ -26,7 +25,6 @@
     <div class="form-group">
 
         {{  form_label(form.startAt, "L'évenement commence le : ", {'label_attr': {'class' : 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.startAt) }}
         
         <div class="col-sm-4">
             {{ form_widget(form.startAt)}}
@@ -35,7 +33,6 @@
 
     <div class="form-group">
             {{  form_label(form.endAt, "L'évenement termine le : ", {'label_attr': {'class' : 'col-sm-2 control-label'}}) }}
-            {{ form_errors(form.endAt) }}
         
         <div class="col-sm-4">
             {{ form_widget(form.endAt)}}
@@ -45,7 +42,6 @@
     <div class="form-group">
 
             {{  form_label(form.content, "Description", {'label_attr': {'class' : 'col-sm-2 control-label'}}) }}
-            {{ form_errors(form.content) }}
         
             <div class="col-sm-5">
                 {{ form_widget(form.content, {'attr': {'class': 'form-control', 'rows':'8'}}) }}
@@ -55,7 +51,6 @@
     <div class="form-group">
 
             {{  form_label(form.price, "Prix à l'entrée", {'label_attr': {'class' : 'col-sm-2 control-label'}}) }}
-            {{ form_errors(form.price) }}
         
             <div class="col-sm-3">
                 {{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}
@@ -64,18 +59,16 @@
 
     <div class="form-group">
 
-        {{  form_label(form.poster, "Photo", {'label_attr': {'class' : 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.poster) }}
+        {{  form_label(form.posterFile, "Photo", {'label_attr': {'class' : 'col-sm-2 control-label'}}) }}
         
         <div class="col-sm-3">
-            {{ form_widget(form.poster, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.posterFile, {'attr': {'class': 'form-control'}}) }}
         </div>
     </div>
 
     <div class="form-group">
 
         {{  form_label(form.place, "Categorie de l'évenement", {'label_attr': {'class' : 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.place) }}
         
         <div class="col-sm-3">
             {{ form_widget(form.place, {'attr': {'class': 'form-control'}}) }}
@@ -85,7 +78,6 @@
     <div class="form-group">
 
         {{  form_label(form.categories, "Catégorie(s) de l'évenement [Plusieurs choix possible]", {'label_attr': {'class' : 'col-sm-2 control-label'}}) }}
-        {{ form_errors(form.categories) }}
         
         <div class="col-sm-3">
             {{ form_widget(form.categories) }}
@@ -95,7 +87,7 @@
     <div class="form-group">
         
         <div class="col-sm-2">
-            <button>Ajouter</button>
+            <button type="submit" class="btn btn-success">Ajouter</button>
         </div>
     </div>
 

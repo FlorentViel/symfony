@@ -3,11 +3,13 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\HttpFoundation\Request;
+
+use App\Service\EventService;
 
 use App\Entity\Event;
 use App\Form\EventType;
-use App\Service\EventService;
 
 
 
@@ -54,7 +56,7 @@ class EventController extends AbstractController
     /**
      * @Route("/event/add", name="event_add")
      */
-    public function add( Request $request)
+    public function add( Request $request, EventService $eventService) 
     {   
    
         $event = new Event(); 
@@ -66,9 +68,10 @@ class EventController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) 
         {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($event);
-            $entityManager->flush();
+            $eventService->add( $event );
+            // $entityManager = $this->getDoctrine()->getManager();
+            // $entityManager->persist($event);
+            // $entityManager->flush();
 
             //$request->getSession()->getFlashBag()->add('notice', 'Evenement bien enregistrée.');
 
@@ -96,10 +99,12 @@ class EventController extends AbstractController
 
     /**
      * @Route("/event/{id}/join", name="event_join", requirements={"id"="\d+"})
+     * @IsGranted("ROLE_USER")
+
      */
     public function join( $id )
     {
-        return $this->render( "event/index.html.twig");
+        return $this->render( "event/join.html.twig");
     }
 
 

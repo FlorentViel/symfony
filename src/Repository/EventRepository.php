@@ -64,7 +64,7 @@ class EventRepository extends ServiceEntityRepository
             $stmt ->orderBy('e.createdAt' , 'DESC');
             }
  
-            $limit = 1;
+            $limit = 2;
             $stmt ->setMaxResults($limit)
             //->getInt('page', 1)
             ->setFirstResult( ($page - 1 )*$limit)

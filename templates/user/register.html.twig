@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription - {{parent()}} {% endblock %}
+
+{% block body %}
+
+<h1>Inscription</h1>
+
+    <div>
+    {{form_start(form,  {'attr': {'novalidate' : 'novalidate', 'class': 'form-horizontal'}})}}
+    {{ form_errors(form) }}
+    {{form_widget(form)}}
+    <button type ="submit">S'inscrire</button>
+    {{ form_end(form) }}
+    </div>
+
+{% endblock %}

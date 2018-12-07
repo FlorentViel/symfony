@@ -9,8 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Entity\Place;
 use App\Entity\Category;
-//use App\Entity\User;
-
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 
 
@@ -21,11 +20,15 @@ class EventType extends AbstractType
         $builder
             ->add('name')
             //->add('createdAt')
-            ->add('startAt')
-            ->add('endAt')
+            ->add('startAt', null , array(
+                'date_widget' => 'single_text'
+            ))
+            ->add('endAt', null , array(
+                'date_widget' => 'single_text'
+            ))
             ->add('content')
             ->add('price')
-            ->add('poster')
+            ->add('posterFile', FileType::class)
             ->add('place', EntityType::class, array(
                 'class' => Place::class,
                 'choice_label' => 'name'))
