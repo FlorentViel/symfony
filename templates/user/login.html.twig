@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription - {{parent()}} {% endblock %}
+
+{% block body %}
+
+<h1>Connection</h1>
+
+
+    <form action"{{path('login')}}" method = "post">
+        <input type="text" placehoder="Nom d'utilisateur" name="_username" value="{{lastUserName}}">
+        <input type="password" placehoder="Mot de passe" name="_password" value="{{lastUserName}}">
+        
+        <button type ="submit">Connection</button>
+    </form>
+
+
+
+
+{% endblock %}

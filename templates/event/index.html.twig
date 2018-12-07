@@ -28,6 +28,8 @@
         <div class = "d-flex lex-row bd-highlight mb-2"><h2>{{event.name}} : </h2>
         <span class= "mb-1 ml-1" style = "padding: 1%"> Date de création {{ event.createdAt|date('Y-m-d\\ h:i') }}<span></div>
         <p>{{event.content}}</p>
+        <img style = "width: 350px;" src="../data/{{event.poster}}"alt="image de l'évenement {{event.name}}" />
+        <br/>
         <span>{{event.price}} € </span>
         <br/>
         <a href="{{ path('event_show', {id: event.id}) }}">Voir plus</a>

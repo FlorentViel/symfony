@@ -4,6 +4,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
  */
@@ -20,9 +21,10 @@ class Event
      * @Assert\Length(
      * min = 3,
      * max = 50,
-     * minMessage = "{{limit}} caracètres minimums",
-     * maxMessage = "{{limit}} caractères maximums"
+     * minMessage = "3 caracètres minimums",
+     * maxMessage = "50 caractères maximums"
      * )
+     * @Assert\NotBlank
      */
     private $name;
     /**
@@ -31,32 +33,51 @@ class Event
     private $createdAt;
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThan("today")
      */
      
     private $startAt;
     /**
      * @ORM\Column(type="datetime")
+     * @Assert\GreaterThan(propertyPath="startAt")
      */
     private $endAt;
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank
      */
     private $content;
     /**
      * @ORM\Column(type="float", nullable=true)
+     * @Assert\NotBlank
+     * @Assert\GreaterThan( 0 )
      */
     private $price;
-    /**
+     /**
      * @ORM\Column(type="string", length=255)
      */
     private $poster;
     /**
+     * @Assert\Url
+     * @Assert\Expression(
+     *     "this.getPosterUrl() or this.getPosterFile()",
+     *     message="Vous devez saisir une URL ou charger une image"
+     * )
+     */
+    private $posterUrl;
+    /**
+     * @Assert\Image( maxSize = "4500k" )
+     */
+    private $posterFile;
+    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Place", inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank
      */
     private $place;
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Category", inversedBy="events")
+     * @Assert\NotBlank
      */
     private $categories;
     /**
@@ -145,6 +166,24 @@ class Event
     public function setPoster(string $poster): self
     {
         $this->poster = $poster;
+        return $this;
+    }
+    public function getPosterUrl(): ?string
+    {
+        return $this->posterUrl;
+    }
+    public function setPosterUrl(string $poster): self
+    {
+        $this->posterUrl = $poster;
+        return $this;
+    }
+    public function getPosterFile()
+    {
+        return $this->posterFile;
+    }
+    public function setPosterFile($poster): self
+    {
+        $this->posterFile = $poster;
         return $this;
     }
     public function getPlace(): ?Place

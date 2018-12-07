@@ -3,10 +3,17 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
+
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("email")
  */
-class User
+class User implements UserInterface 
 {
     /**
      * @ORM\Id()
@@ -16,18 +23,39 @@ class User
     private $id;
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     * min = 3,
+     * max = 50,
+     * minMessage = "3 caracètres minimums",
+     * maxMessage = "50 caractères maximums"
+     * )
+     * @Assert\NotBlank
      */
     private $username;
     /**
+     * @var string $email
      * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     * @Assert\Email(
+     * message = "The email '{{ value }}' is not a valid email.",
+     * checkMX = true
+     * )
+     * @Assert\NotBlank
      */
     private $email;
+
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(max=4096)
+     */
+    private $plainPassword;
     /**
      * @ORM\Column(type="string", length=255)
      */
     private $password;
     /**
      * @ORM\Column(type="array")
+     * @Assert\NotBlank
      */
     private $roles = [];
     /**
@@ -48,6 +76,8 @@ class User
         $this->events = new ArrayCollection();
         $this->participations = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->roles = ["ROLE_USER"];
+
     }
     public function getId(): ?int
     {
@@ -69,6 +99,15 @@ class User
     public function setEmail(string $email): self
     {
         $this->email = $email;
+        return $this;
+    }
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+    public function setPlainPassword(string $plainPassword): self
+    {
+        $this->plainPassword = $plainPassword;
         return $this;
     }
     public function getPassword(): ?string
@@ -171,5 +210,15 @@ class User
         }
 
         return $this;
+    }
+
+    public function eraseCredentials()
+    {
+
+    }
+
+    public function getSalt(): ? string
+    {
+        return null;
     }
 }
