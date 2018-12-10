@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity("email")
+ * @UniqueEntity(fields="username", message="Username already taken")
  */
 class User implements UserInterface 
 {
@@ -22,7 +23,7 @@ class User implements UserInterface
      */
     private $id;
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\Length(
      * min = 3,
      * max = 50,
